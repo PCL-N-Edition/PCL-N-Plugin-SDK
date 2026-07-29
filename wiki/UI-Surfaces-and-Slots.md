@@ -1,8 +1,8 @@
 # UI Surface 与 Slot
 
-> Applies to PCL N Plugin SDK 0.2.4.
+> Applies to PCL N Plugin SDK 0.2.5.
 
-> SDK `0.2.4`；Surface 目录以当前 PCL Desktop 实验性启动页 / 宿主发布为准。
+> SDK `0.2.5`；Surface 目录以当前 PCL Desktop 实验性启动页 / 宿主发布为准。
 
 Surface 是宿主发布的稳定 UI 边界，Target 是 Manifest 中引用的 Surface ID，Slot 是稳定插入点。插件不能依赖控件类名、XAML Name、本地化文本或 Visual Tree 索引。
 

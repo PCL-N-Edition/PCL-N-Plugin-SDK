@@ -1,6 +1,6 @@
 # 桌面端安装与调试
 
-> 适用于 SDK `0.2.4`，并描述 PCL.Plugin `v0.14.0` 的现行桌面流程。
+> 适用于 SDK `0.2.5`，并描述 PCL.Plugin `v0.18.5` 的现行桌面流程。
 
 ## 安装已签名插件
 
@@ -32,11 +32,11 @@ PCL N 始终拒绝未签名包。`PclNPluginSign=false` 仍会由 SDK 自动创�
 保持插件 ID 不变，提高 `Version` 与 `plugin.json.version`，重新构建并安装新 `.pnp`：
 
 ```xml
-<Version>0.2.4</Version>
+<Version>0.2.5</Version>
 ```
 
 ```json
-"version": "0.2.4"
+"version": "0.2.5"
 ```
 
 发布过的版本不可覆盖。即使只修复一个拼写，也应发布新版本。

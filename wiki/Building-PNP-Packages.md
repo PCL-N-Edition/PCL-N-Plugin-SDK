@@ -1,8 +1,8 @@
 # 构建 `.pnp`
 
-> Applies to PCL N Plugin SDK 0.2.4.
+> Applies to PCL N Plugin SDK 0.2.5.
 
-> SDK `0.2.4`
+> SDK `0.2.5`
 
 安装 `PCLN.Plugin.Sdk.Build` 后，MSBuild 会在普通项目构建结束时生成 `.pnp`。
 
