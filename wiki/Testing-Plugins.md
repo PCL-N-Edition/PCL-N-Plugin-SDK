@@ -8,7 +8,7 @@
 
 ```powershell
 dotnet new mstest -n ExamplePlugin.Tests --framework net10.0
-dotnet add ExamplePlugin.Tests package PCLN.Plugin.Testing --version 0.1.0
+dotnet add ExamplePlugin.Tests package PCLN.Plugin.Testing --version 0.2.5
 dotnet add ExamplePlugin.Tests reference ExamplePlugin.csproj
 ```
 

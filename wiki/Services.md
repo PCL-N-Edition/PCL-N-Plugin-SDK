@@ -21,8 +21,11 @@
 | `pcl.secure-storage` | `IPluginSecureStorage` | Host托管的插件隔离凭据存储 |
 | `pcl.uri-launcher` | `IPluginUriLauncher` | 通过 Host 打开外部 HTTP/HTTPS 链接 |
 | `pcl.background-tasks` | `IPluginBackgroundTaskService` | 启动器任务管理进度（与 MC 安装下载同界面） |
+| `pcl.package-assets` | `IPluginPackageAssetService` | 已安装签名包内的只读资源（文件表 + SHA-256） |
 
 这些 ID定义在 `PluginServiceIds`。`IPluginLogger` 和 `IPluginDispatcher` 同时通过 `context.Logger`、`context.Dispatcher` 提供便捷入口。
+
+> **运行时：** 上表服务在 **PCL.Plugin.Sidecar（CoreCLR）** 内向插件提供；AOT 宿主本身不加载插件程序集。见 [架构与边界](Architecture-and-Boundaries)。
 
 ### 任务管理进度（`pcl.background-tasks`）
 
@@ -58,16 +61,42 @@ catch (OperationCanceledException)
 
 这四个适配服务 ID定义在 `PluginUiServiceIds`。`IAvaloniaPluginPageService` 继承 `IPluginNavigationService`，因此页面服务同时提供 `Register` 和 `NavigateAsync`。
 
+### 扩展、注册表与运行时补丁
+
+| ID | C# 接口 | 用途 |
+|---|---|---|
+| `pcl.registry` | `IPluginRegistryService` | ACL 保护的可组合扩展注册表（非 Windows 注册表） |
+| `pcl.runtime-patches` | `IPluginRuntimePatchService` | 受信运行时方法补丁（Mixin/Harmony 风格） |
+| `pcl.package-assets` | `IPluginPackageAssetService` | 从**已安装签名包**解析只读资源并校验文件表 SHA-256 |
+
+`pcl.registry` / `pcl.runtime-patches` 需要 Manifest 声明对应权限（如 `registry.read`、`runtime.patch.host`）。完整示例见 [注册表与运行时注入](Registry-and-Runtime-Patches)。
+
+`pcl.package-assets` 与 `pcl.files` 不同：
+
+- `pcl.files` → 插件**私有数据目录**读写；  
+- `pcl.package-assets` → 安装目录内、**签名文件表列出的**只读资源（例如包内模板、静态配置）。
+
+```csharp
+IPluginPackageAssetService packages = context.Services.Require<IPluginPackageAssetService>();
+PluginPackageAssetResult result = await packages.ResolveAsync("assets/template.json", cancellationToken);
+if (result.IsSuccess)
+    context.Logger.Info($"asset @ {result.Asset!.FullPath}");
+```
+
 ### 插件协作与宿主专用服务
 
 | ID | C# 接口 | 用途 |
 |---|---|---|
 | `pcl.exports` | `IPluginExportRegistry` | 在稳定共享契约上导出或导入插件间服务 |
-| `pcl.market` | Host市场契约 | 宿主管理的插件市场预留 ID |
+| `pcl.market` | `IPluginMarketClient`（宿主内部） | 宿主管理的在线市场 HTTP 客户端 |
 
 `pcl.exports` 定义在 `PluginServiceIds`。导出契约程序集必须由默认加载上下文共享；运行时会拒绝插件私有类型越过边界。
 
-`pcl.market` 是宿主市场契约的预留 ID；第三方插件不应假设当前 Host会通过 `context.Services` 暴露远端市场客户端。
+**市场说明（与 Sidecar 对齐）：**
+
+- Sidecar / `PCL.Plugin` **内部**使用 `IPluginMarketClient`（HTTP）完成浏览、下载与签名校验。  
+- 服务 ID `pcl.market` 是稳定预留；**当前产品不会**把远端市场客户端默认注入到第三方插件的 `context.Services`。  
+- 插件若需市场能力，应通过宿主 UI / data-chain 动作或后续公开的可选服务协商，不要假设 `TryGet<IPluginMarketClient>` 一定成功。
 
 ## 公开契约与 Host可用性
 

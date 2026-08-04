@@ -80,6 +80,12 @@ public static class PluginServiceIds
     /// Use for long-running plugin downloads, installs, and updates.
     /// </summary>
     public static PluginServiceId BackgroundTasks { get; } = new("pcl.background-tasks");
+
+    /// <summary>
+    /// Resolves files from the currently installed signed plugin package (file table + SHA-256).
+    /// Distinct from <see cref="Files"/> which only accesses the plugin private data directory.
+    /// </summary>
+    public static PluginServiceId PackageAssets { get; } = new("pcl.package-assets");
 }
 
 /// <summary>Host-provided stable service exposed to third-party plugins.</summary>

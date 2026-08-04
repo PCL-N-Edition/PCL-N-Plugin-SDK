@@ -1,6 +1,6 @@
 # FAQ
 
-> Applies to PCL N Plugin SDK 0.2.5.
+> Applies to PCL N Plugin SDK 0.2.5 · Runtime: **Sidecar** (see Architecture).
 
 > SDK `0.2.5`
 
@@ -20,9 +20,13 @@ NuGet 包 ID 避开了已被保留的旧 ID；程序集名与 namespace 保持�
 
 不能。首版只支持无 `x:Class` 的声明式 AXAML，行为通过公开命令 ID 和 Host 绑定上下文连接。
 
+## 插件跑在宿主进程里吗？
+
+产品形态下**不跑在 AOT 宿主进程里**。PCL N 桌面启动 **PCL.Plugin.Sidecar**（CoreCLR），第三方插件在 Sidecar 的 ALC 中加载；宿主只做 IPC 与通用 UI 渲染。见 [架构与边界](Architecture-and-Boundaries)。
+
 ## 权限是否等于沙箱？
 
-不是。插件在进程内运行，权限约束官方 API 并服务于审核和用户决策，不是操作系统隔离。
+不是。插件在 Sidecar 进程内仍可调用 .NET/OS API；权限约束官方 API 并服务于审核和用户决策，不是操作系统级隔离。
 
 ## 开发时一定要签名吗？
 

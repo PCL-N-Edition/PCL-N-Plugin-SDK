@@ -50,10 +50,11 @@ PCL N Plugin SDK 是 PCL N 第三方插件的公开开发入口。你可以用�
 
 ### 核心概念
 
-- [架构与边界](Architecture-and-Boundaries)
+- [架构与边界](Architecture-and-Boundaries)（含 **Sidecar 进程外**运行时）
 - [NuGet 包](NuGet-Packages)
 - [身份与版本](Plugin-Identity-and-Versioning)
 - [生命周期与注册项](Lifecycle-and-Registrations)
+- [注册表与运行时注入](Registry-and-Runtime-Patches)
 - [兼容与废弃](Compatibility-and-Deprecation)
 
 ### Manifest 与安全

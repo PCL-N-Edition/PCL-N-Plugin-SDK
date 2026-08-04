@@ -402,3 +402,26 @@ internal sealed class TestDelegateRegistration(string id, Action release) : IPlu
         return ValueTask.CompletedTask;
     }
 }
+
+public sealed class TestPluginPackageAssetService(
+    IReadOnlyDictionary<string, PluginPackageAsset>? assets = null) : IPluginPackageAssetService
+{
+    private readonly IReadOnlyDictionary<string, PluginPackageAsset> _assets =
+        assets ?? new Dictionary<string, PluginPackageAsset>(StringComparer.OrdinalIgnoreCase);
+
+    public PluginServiceId Id => PluginServiceIds.PackageAssets;
+    public PluginApiVersion Version { get; } = new(0, 1);
+
+    public ValueTask<PluginPackageAssetResult> ResolveAsync(
+        string relativePath,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        string key = relativePath.Replace('\\', '/').Trim().TrimStart('/');
+        if (_assets.TryGetValue(key, out PluginPackageAsset? asset))
+            return ValueTask.FromResult(new PluginPackageAssetResult(PluginPackageAssetStatus.Success, asset));
+        return ValueTask.FromResult(new PluginPackageAssetResult(
+            PluginPackageAssetStatus.NotFound,
+            Message: key));
+    }
+}

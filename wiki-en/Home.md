@@ -4,6 +4,10 @@
 
 This page is the English counterpart of the matching Chinese SDK guide. It documents the same contracts, examples, and compatibility requirements.
 
+## Product runtime
+
+PCL N Desktop is **AOT** and loads plugins only via **PCL.Plugin.Sidecar** (CoreCLR, IPC). Plugin ABI remains `IPclNPlugin` + public NuGet packages. Read [Architecture and Boundaries](Architecture-and-Boundaries).
+
 ## SDK 0.2.5 requirements
 
 - Target .NET 10 and reference only public PCLN.Plugin packages.

@@ -188,6 +188,7 @@ public sealed class TestPluginContext : IPluginContext, IAsyncDisposable
         Process = new TestPluginProcessService();
         Clipboard = new TestPluginClipboardService();
         Files = new TestPluginFileService(Directories);
+        PackageAssets = new TestPluginPackageAssetService();
         Accounts = new TestPluginAccountReadService();
         Downloads = new TestPluginDownloadService();
         LaunchModifications = new TestPluginLaunchModificationService(TestLifetime);
@@ -209,6 +210,7 @@ public sealed class TestPluginContext : IPluginContext, IAsyncDisposable
             .Add<IPluginProcessService>(Process)
             .Add<IPluginClipboardService>(Clipboard)
             .Add<IPluginFileService>(Files)
+            .Add<IPluginPackageAssetService>(PackageAssets)
             .Add<IPluginAccountReadService>(Accounts)
             .Add<IPluginDownloadService>(Downloads)
             .Add<IPluginLaunchModificationService>(LaunchModifications)
@@ -255,6 +257,8 @@ public sealed class TestPluginContext : IPluginContext, IAsyncDisposable
     public TestPluginClipboardService Clipboard { get; }
 
     public TestPluginFileService Files { get; }
+
+    public TestPluginPackageAssetService PackageAssets { get; }
 
     public TestPluginAccountReadService Accounts { get; }
 
