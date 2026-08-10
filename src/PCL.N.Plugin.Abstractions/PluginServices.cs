@@ -50,6 +50,9 @@ public static class PluginServiceIds
 
     public static PluginServiceId Downloads { get; } = new("pcl.downloads");
 
+    /// <summary>Legacy launch-modify service id. Prefer <see cref="IndirectInject"/>.</summary>
+    [Obsolete("Use PluginServiceIds.IndirectInject (IndirectInjector / ExampleII).")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static PluginServiceId LaunchModify { get; } = new("pcl.launch.modify");
 
     public static PluginServiceId Ui { get; } = new("pcl.ui");
@@ -59,8 +62,22 @@ public static class PluginServiceIds
     /// <summary>ACL-protected, composable extension registry.</summary>
     public static PluginServiceId Registry { get; } = new("pcl.registry");
 
-    /// <summary>Trusted runtime method patching (Mixin/Harmony style).</summary>
+    /// <summary>
+    /// Legacy runtime patches service id. Prefer <see cref="DirectInject"/>.
+    /// </summary>
+    [Obsolete("Use PluginServiceIds.DirectInject (DirectInjector / ExampleDI).")]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static PluginServiceId RuntimePatches { get; } = new("pcl.runtime-patches");
+
+    /// <summary>
+    /// DirectInject: class Mixin injection (DirectInjector / ExampleDI) via host symbol table + Harmony.
+    /// </summary>
+    public static PluginServiceId DirectInject { get; } = new("pcl.direct-inject");
+
+    /// <summary>
+    /// IndirectInject: API-level injection (IndirectInjector / ExampleII), e.g. launch modifications.
+    /// </summary>
+    public static PluginServiceId IndirectInject { get; } = new("pcl.indirect-inject");
 
     /// <summary>Host-managed access to the PCL.N plugin market.</summary>
     public static PluginServiceId Market { get; } = new("pcl.market");

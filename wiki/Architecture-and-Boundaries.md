@@ -31,7 +31,8 @@ PCL N 桌面应用（AOT 宿主，不加载第三方插件 IL）
 2. **插件平台在 Sidecar**：`PCL.Plugin.Sidecar` 由宿主启动，经 IPC 提供目录/安装/UI 数据链/反馈等。  
 3. **插件 ABI 不变**：你仍实现 `IPclNPlugin`、调用 `context.Services`；**不要**引用 `PCL.Desktop` 或 `PCL.Plugin`。  
 4. **UI**：设置/插件页由 Sidecar 推送 **data-chain**（manifest / page tree / actions），宿主只做通用渲染与导航注入，而不是在宿主源码中写死插件页面。  
-5. **遗留进程内源码叠加**（`PclWithPlugin`）仅用于调试/特殊构建，**不是**商店分发形态。
+5. **遗留进程内源码叠加**（`PclWithPlugin`）仅用于调试/特殊构建，**不是**商店分发形态。  
+6. **PCL.Plugin 产品包（v0.20+）**：Sidecar Release **混淆**、**无 PDB**、**不附带 host 符号表**；DirectInject 用 `Target(assembly,type,method)`，勿依赖嵌入符号表。
 
 主机仓库架构说明（实现细节）：
 

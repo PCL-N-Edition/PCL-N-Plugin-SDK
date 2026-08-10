@@ -28,6 +28,11 @@ public interface IPluginDownloadService : IPluginService
     IReadOnlyList<PluginDownloadSourceInfo> ListSources();
 }
 
+/// <summary>
+/// Legacy launch-arg transform. Prefer <see cref="IndirectInjector"/> / <see cref="IPluginIndirectInjectService"/>.
+/// </summary>
+[Obsolete("Use IndirectInjector (ExampleII) with IPluginIndirectInjectService.ModifyLaunch / Inject.")]
+[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 public sealed record PluginLaunchModification(
     string Id,
     Func<PluginLaunchRequest, PluginLaunchRequest> Apply);
@@ -38,6 +43,11 @@ public sealed record PluginLaunchRequest(
     IReadOnlyList<string> GameArguments,
     IReadOnlyDictionary<string, string> EnvironmentVariables);
 
+/// <summary>
+/// Legacy launch modification service. Bridged to <see cref="IPluginIndirectInjectService"/>.
+/// </summary>
+[Obsolete("Use IndirectInjector (API inject / ExampleII) with IPluginIndirectInjectService (pcl.indirect-inject).")]
+[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 public interface IPluginLaunchModificationService : IPluginService
 {
     IPluginRegistration Register(PluginLaunchModification modification);
